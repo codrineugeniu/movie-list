@@ -1,26 +1,24 @@
 import React from 'react';
-import logo from './logo.svg';
+import { Layout, Typography, Empty } from 'antd';
+import 'antd/dist/antd.css'
+
 import './App.css';
 
+
+const { Header, Content, Footer } = Layout;
+const { Title } = Typography;
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Layout>
+      <Header>
+        <Title>Movie List App</Title>
+      </Header>
+      <Content>
+        <Empty />
+      </Content>
+      <Footer></Footer>
+    </Layout>
+  )
 }
 
 export default App;
