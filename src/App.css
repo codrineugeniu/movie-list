@@ -1,3 +1,13 @@
 h1.ant-typography {
   color: rgb(240, 242, 245);
 }
+
+.result_poster img {
+  max-width: 100%;
+  min-height: 100px;
+}
+
+.result_item {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
