@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Row, Col, Input, Button } from 'antd'
+import axios from 'axios'
+
+import Settings from '../../config'
 
 export class Home extends Component {
   state = {
@@ -7,16 +10,18 @@ export class Home extends Component {
   }
 
   handleSearchChange = event => {
-    const {
-      target: { value },
-    } = event
+    const { value } = event.target
     this.setState({
       searchTerm: value,
     })
   }
 
-  handleSearchClick = () => {
-    console.log(this.state.searchTerm)
+  handleSearchClick = event => {
+    const url = `https://api.themoviedb.org/3/search/movie?api_key=${Settings.APIKEY}&query=${this.state.searchTerm}`
+
+    axios.get(url).then(response => {
+      console.log(response.data)
+    })
   }
 
   render = () => {
@@ -30,11 +35,7 @@ export class Home extends Component {
           />
         </Col>
         <Col span={2}>
-          <Button
-            type="primary"
-            icon="search"
-            onClick={this.handleSearchClick}
-          >
+          <Button type="primary" icon="search" onClick={this.handleSearchClick}>
             Search
           </Button>
         </Col>
