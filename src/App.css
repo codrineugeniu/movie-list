@@ -4,10 +4,14 @@ h1.ant-typography {
 
 .result_poster img {
   max-width: 100%;
-  min-height: 100px;
+  height: 90px;
 }
 
 .result_item {
   margin-top: 5px;
   margin-bottom: 5px;
+}
+
+.movie_list {
+  display: flex;
 }

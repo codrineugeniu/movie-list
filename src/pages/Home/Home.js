@@ -3,39 +3,24 @@ import { Row, Col, Input, Button } from 'antd'
 import axios from 'axios'
 
 import Settings from '../../config'
-
-const IMAGE_PATH = 'https://image.tmdb.org/t/p/w200/'
-
-const ResultList = props => {
-  const { results } = props
-  return results.map(item => {
-    return (
-      <Row key={item.id} gutter={8} className="result_item">
-        <Col span={4} className="result_poster">
-          <img
-            alt={`Poster of ${item.title}`}
-            src={IMAGE_PATH + item.poster_path}
-          />
-        </Col>
-        <Col span={12}>
-          <span>{item.title}</span>
-        </Col>
-        <Col span={4}>
-          <span>{item.vote_average}</span>
-        </Col>
-        <Col span={4}>
-          <span>{item.release_date}</span>
-        </Col>
-      </Row>
-    )
-  })
-}
+import { ResultList } from './ResultList/ResultList'
+import MovieList from './MovieList/MovieList'
 
 export class Home extends Component {
   state = {
     searchTerm: '',
     results: [],
     isLoading: false,
+    savedMovies: [],
+  }
+
+  componentDidMount() {
+    console.log('componentDidMount called')
+    const savedMovies = localStorage.getItem('savedMovies')
+    this.setState({
+      savedMovies: JSON.parse(savedMovies),
+    })
+    //console.log(this.state.savedMovies)
   }
 
   handleSearchChange = event => {
@@ -49,6 +34,7 @@ export class Home extends Component {
   }
 
   handleSearchClick = event => {
+    event.preventDefault()
     const url = `https://api.themoviedb.org/3/search/movie?api_key=${Settings.APIKEY}&query=${this.state.searchTerm}`
     this.setState({ isLoading: true })
     axios.get(url).then(response => {
@@ -59,34 +45,57 @@ export class Home extends Component {
     })
   }
 
+  handleAddMovie = movie => {
+    const { savedMovies } = this.state
+    savedMovies.push(movie)
+    this.setState({
+      savedMovies: savedMovies,
+      results: []
+    })
+    localStorage.setItem('savedMovies', JSON.stringify(this.state.savedMovies))
+  }
+
   render = () => {
     const { searchTerm, isLoading } = this.state
+    console.log('render called')
     return (
       <Fragment>
         <Row>
-          <Col span={8} offset={6}>
-            <Input
-              placeholder="Search for a movie"
-              value={searchTerm}
-              onChange={this.handleSearchChange}
-              onPressEnter={this.handleSearchChange}
-              allowClear
-            />
-          </Col>
-          <Col span={2}>
-            <Button
-              type="primary"
-              icon="search"
-              disabled={searchTerm.length < 2}
-              loading={isLoading}
-              onClick={this.handleSearchClick}>
-              Search
-            </Button>
-          </Col>
+          <form onSubmit={this.handleSearchClick}>
+            <Col span={8} offset={6}>
+              <Input
+                placeholder="Search for a movie"
+                value={searchTerm}
+                onChange={this.handleSearchChange}
+                onPressEnter={this.handleSearchChange}
+                allowClear
+              />
+            </Col>
+            <Col span={2}>
+              <Button
+                type="primary"
+                icon="search"
+                disabled={searchTerm.length < 2}
+                loading={isLoading}
+                onClick={this.handleSearchClick}>
+                Search
+              </Button>
+            </Col>
+          </form>
         </Row>
         <Row>
           <Col span={10} offset={6}>
-            <ResultList results={this.state.results} />
+            <ResultList
+              results={this.state.results}
+              onAddMovie={this.handleAddMovie}
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col span={20} offset={2} className="movie_list">
+            {this.state.savedMovies.length > 0 && (
+              <MovieList movies={this.state.savedMovies} />
+            )}
           </Col>
         </Row>
       </Fragment>
