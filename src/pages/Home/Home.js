@@ -51,13 +51,25 @@ export class Home extends Component {
     this.setState({
       savedMovies: savedMovies,
       results: []
+    }, () => {
+      localStorage.setItem('savedMovies', JSON.stringify(this.state.savedMovies))
     })
-    localStorage.setItem('savedMovies', JSON.stringify(this.state.savedMovies))
+  }
+
+  handeDelete = movie => {
+    const { savedMovies } = this.state;
+    const movies = savedMovies.filter(item => item.id !== movie.id);
+
+    this.setState({
+      savedMovies: movies
+    }, () => {
+      localStorage.setItem('savedMovies', JSON.stringify(this.state.savedMovies))
+    })
   }
 
   render = () => {
     const { searchTerm, isLoading } = this.state
-    console.log('render called')
+
     return (
       <Fragment>
         <Row>
@@ -87,6 +99,7 @@ export class Home extends Component {
           <Col span={10} offset={6}>
             <ResultList
               results={this.state.results}
+              savedMovies={this.state.savedMovies}
               onAddMovie={this.handleAddMovie}
             />
           </Col>
@@ -94,7 +107,10 @@ export class Home extends Component {
         <Row>
           <Col span={20} offset={2} className="movie_list">
             {this.state.savedMovies.length > 0 && (
-              <MovieList movies={this.state.savedMovies} />
+              <MovieList
+                movies={this.state.savedMovies}
+                handleDelete={this.handeDelete}
+              />
             )}
           </Col>
         </Row>
