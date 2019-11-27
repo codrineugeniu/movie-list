@@ -15,12 +15,12 @@ export class Home extends Component {
   }
 
   componentDidMount() {
-    console.log('componentDidMount called')
     const savedMovies = localStorage.getItem('savedMovies')
-    this.setState({
-      savedMovies: JSON.parse(savedMovies),
-    })
-    //console.log(this.state.savedMovies)
+    if (savedMovies) {
+      this.setState({
+        savedMovies: JSON.parse(savedMovies),
+      })
+    }
   }
 
   handleSearchChange = event => {
