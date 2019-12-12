@@ -13,7 +13,7 @@ function App() {
       <Header />
       <Content>
         <Home />
-      </Content>
+      </Content>q
       <Footer></Footer>
     </Layout>
   )

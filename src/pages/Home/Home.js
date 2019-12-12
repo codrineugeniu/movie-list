@@ -76,7 +76,7 @@ export class Home extends Component {
           <form onSubmit={this.handleSearchClick}>
             <Col span={8} offset={6}>
               <Input
-                placeholder="Search for a movie"
+                placeholder="S earch for a movie"
                 value={searchTerm}
                 onChange={this.handleSearchChange}
                 onPressEnter={this.handleSearchChange}

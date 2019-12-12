@@ -7,7 +7,7 @@ const { Header } = Layout
 const AppHeader = () => {
   return (
     <Header>
-      <Title>Movie List App</Title>
+      <Title>Bestest Movie List App</Title>
     </Header>
   )
 }
